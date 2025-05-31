@@ -46,6 +46,20 @@ class Alumno:
 import re
 
 def leeAlumnos(ficAlumnos):
+    """
+    Esta función lee un fichero con datos de alumnos y devuelve un diccionario con los datos leídos.
+
+    >>> alumnos = leeAlumnos('alumnos.txt')
+    >>> for alumno in alumnos:
+    ...     print(alumnos[alumno])
+    ...
+    171     Blanca Agirrebarrenetse 9.5
+    23      Carles Balcells de Lara 4.9
+    68      David Garcia Fuster     7.0
+    """
+
+    diccAlumnos = {}
+
     expID = r'\s*(?p<id>\d+)\s+'
     expNom = r'(?p<nom>[\w\s]+?)\s+'
     expNotes = r'(?p<notes>[\d.\s]+)\s*'
@@ -56,6 +70,14 @@ def leeAlumnos(ficAlumnos):
         for linea in fpAlumnos:
             match = expresion.search(linea)
             if match is not None:
-                print(match['id'])
-                print(match['nom'])
-                print(match['notes'])
+                numIden = int(match['id'])
+                nombre = match['nom']
+                notas_str = match['notes']
+                notas = list(map(float, notas_str))
+                
+                diccAlumnos[nombre] = Alumno(nombre, numIden, notas)
+    return diccAlumnos
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod(optionflags= doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS)
